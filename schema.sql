@@ -26,10 +26,9 @@ CREATE TABLE `game_status` (
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
 	`id` int(10) not null auto_increment,
-     `username` varchar(100) default null,
-     `password`
-     `token` varchar(100) default null,
-     
+     `username` varchar(20) default null,
+     `password` varchar(20),
+     `token` varchar(20) default null,
      primary key(`id`)
 );
 
