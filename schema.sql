@@ -59,12 +59,13 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
 	`id` int(10) not null auto_increment,
      `username` varchar(20) default null,
+     `email` varchar(50) default null,
      `password` varchar(20),
-     `token` varchar(20) default null,
+     `token` varchar(100) default null,
      primary key(`id`)
 );
-
-Insert into users (username,password) VALUES ('thankarezos','pass');
+select * from users;
+Insert into users (username,email,password) VALUES ('thankarezos','thankarezos@gmail.com','pass');
 
 
 
