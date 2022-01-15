@@ -64,5 +64,7 @@ CREATE TABLE `users` (
      primary key(`id`)
 );
 
+Insert into users (username,password) VALUES ('thankarezos','pass');
+
 
 
