@@ -25,8 +25,20 @@ function login() {
     global $mysqli;
 	$sql = "SELECT id, username FROM users WHERE username = ? OR email = ? AND password = ?";
 	$st = $mysqli->prepare($sql);
-    $st->bind_param("sss",$GLOBALS['input']['username'],$GLOBALS['input']['username'],$GLOBALS['input']['pass']);
-	$st->execute();
+    if ( false===$st ) {
+        die("Prepare Failed");
+    }
+
+    $rc = $st->bind_param("sss",$GLOBALS['input']['username'],$GLOBALS['input']['username'],$GLOBALS['input']['pass']);
+    if ( false===$rc ) {
+        die("Bind Failed");
+    }
+
+	$rc = $st->execute();
+    if ( false===$rc ) {
+        die("Execute Failed");
+    }
+
 	$res = $st->get_result();
     if(mysqli_num_rows($res) < 1){
         echo 'Combination of username and password not found ';
@@ -40,9 +52,21 @@ function login() {
         $_COOKIE['tokenC'] = $token;
 
         $sql = "UPDATE users set token = ? WHERE username = ? OR email = ?";
-        $st2 = $mysqli->prepare($sql);
-        $st2->bind_param('sss',$token,$GLOBALS['input']['username'],$GLOBALS['input']['username']);
-        $st2->execute();
+
+        $st = $mysqli->prepare($sql);
+        if ( false===$st ) {
+            die("Prepare Failed");
+        }
+
+        $rc = $st->bind_param('sss',$token,$GLOBALS['input']['username'],$GLOBALS['input']['username']);
+        if ( false===$rc ) {
+            die("Bind Failed");
+        }
+
+        $rc = $st->execute();
+        if ( false===$rc ) {
+            die("Execute Failed");
+        }
         echo "correct ";
     }
     
