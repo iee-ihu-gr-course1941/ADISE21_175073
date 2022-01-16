@@ -52,7 +52,7 @@ switch ($request[0]) {
 function login()
 {
     global $mysqli;
-    $sql = "SELECT id, username FROM users WHERE username = ? OR email = ?";
+    $sql = "SELECT id, username, password FROM users WHERE username = ? OR email = ?";
     $st = $mysqli->prepare($sql);
     if (false === $st) {
         print json_encode(['errormesg' => "Prepare Failed"]);
@@ -79,9 +79,9 @@ function login()
         print json_encode(['errormesg' => "Combination of username and password not found"]);
         exit;
     }
-    $row = mysqli_fetch_assoc($res);
+    $row = $res->fetch_assoc();
 
-    $passwordV =  password_verify($GLOBALS['input']['pass'],$row['password']);
+    $passwordV =  password_verify($GLOBALS['input']['pass'],$row["password"]);
 
     if($passwordV == false){
         print json_encode(['errormesg' => "Combination of username and password not found"]);
