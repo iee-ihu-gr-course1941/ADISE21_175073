@@ -132,7 +132,7 @@ function register()
 
     $sql_u = "SELECT username FROM users where username=?";
     $sql_e = "SELECT email FROM users where email=?";
-    
+
     //u
     $st_u = $mysqli->prepare($sql_u);
     if (false === $st_u) {
@@ -152,7 +152,7 @@ function register()
         print json_encode(['errormesg'=>"Execute Failed"]);
         exit;
     }
-
+    $res_u = $st_u->get_result();
     //e
     $st_e = $mysqli->prepare($sql_e);
     if (false === $st_e) {
@@ -171,7 +171,7 @@ function register()
         print json_encode(['errormesg'=>"Execute Failed"]);
         exit;
     }
-    $res_u = $st_u->get_result();
+    
     $res_e = $st_e->get_result();
     if (mysqli_num_rows($res_e) >= 1 and mysqli_num_rows($res_u) < 1 ) {
         print json_encode(['errormesg' => "Email already exist"]);
