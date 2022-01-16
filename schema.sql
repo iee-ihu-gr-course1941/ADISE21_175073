@@ -66,6 +66,3 @@ CREATE TABLE `users` (
 );
 select * from users;
 Insert into users (username,email,password) VALUES ('thankarezos','thankarezos@gmail.com','pass');
-
-
-
