@@ -61,6 +61,9 @@ function login()
         exit;
     }
 
+
+
+
 	$rc = $st->execute();
     if ( false===$rc ) {
         print json_encode(['errormesg'=>"Execute Failed"]);
@@ -97,8 +100,11 @@ function login()
         print json_encode(['errormesg'=>"Execute Failed"]);
         exit;
     }
+    print json_encode(['success'=>"TRUE"]);
+    
 }
 
 function register()
 {
+
 }

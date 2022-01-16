@@ -58,8 +58,8 @@ CREATE TABLE `game_status` (
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
 	`id` int(10) not null auto_increment,
-     `username` varchar(20) default null,
-     `email` varchar(50) default null,
+     `username` varchar(20) default null unique,
+     `email` varchar(50) default null unique,
      `password` varchar(20),
      `token` varchar(100) default null,
      primary key(`id`)
