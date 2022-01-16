@@ -55,16 +55,30 @@ CREATE TABLE `game_status` (
     `change` timestamp null default null
 );
 
+
+
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
 	`id` int(10) not null auto_increment,
      `username` varchar(20) default null UNIQUE,
      `email` varchar(50) default null UNIQUE,
      `password` varchar(100),
-     `token` varchar(100) default null,
+     `token` varchar(100) default null UNIQUE,
      primary key(`id`)
 );
+
+DROP TABLE IF EXISTS `players`;
+CREATE TABLE `players` (
+    'player' int auto_increment,
+    `id` int(10) not null,
+    `username` varchar(20) default null UNIQUE,
+    `token` varchar(100) default null UNIQUE,
+    primary key(`player`)
+);
+
+
 select * from users;
+select * from players;
 Insert into users (username,email,password) VALUES ('thankarezos','thankarezos@gmail.com','pass');
 
 DELIMITER $$;
