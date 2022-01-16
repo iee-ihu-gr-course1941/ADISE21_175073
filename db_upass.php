@@ -2,6 +2,6 @@
 	if(!defined('Access')) {
 	   die('Direct access not permitted');
 	}
-	$DB_PASS = 'thankappa2';
+	$DB_PASS = '';
 	$DB_USER = 'root';
 ?>
