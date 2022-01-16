@@ -60,7 +60,7 @@ CREATE TABLE `users` (
 	`id` int(10) not null auto_increment,
      `username` varchar(20) default null UNIQUE,
      `email` varchar(50) default null UNIQUE,
-     `password` varchar(20),
+     `password` varchar(100),
      `token` varchar(100) default null,
      primary key(`id`)
 );
