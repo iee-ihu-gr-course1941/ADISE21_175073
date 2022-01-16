@@ -20,7 +20,7 @@ switch ($request[0]) {
         break;
     case 'register':
         if ($method == 'POST') {
-            if (!isset($GLOBALS['input']['username'],$GLOBALS['input']['mail'], $GLOBALS['input']['password'],$GLOBALS['input']['passwordRepeat'])){
+            if (!isset($GLOBALS['input']['username'],$GLOBALS['input']['email'], $GLOBALS['input']['password'],$GLOBALS['input']['passwordRepeat'])){
                 header("HTTP/1.1 400 Bad Request");
                 echo "kati";
                 exit();
@@ -110,8 +110,9 @@ function login()
 
 function register()
 {
+    global $mysqli;
     $username = $GLOBALS['input']['username'];
-    $email = $GLOBALS['input']['mail'];
+    $email = $GLOBALS['input']['email'];
     $password = $GLOBALS['input']['password'];
     $passwordRepeat = $GLOBALS['input']['passwordRepeat'];
     
@@ -129,8 +130,62 @@ function register()
         exit();
     }
 
+    $sql_u = "SELECT username FROM users where username=?";
+    $sql_e = "SELECT email FROM users where email=?";
+    
+    //u
+    $st_u = $mysqli->prepare($sql_u);
+    if (false === $st_u) {
+        print json_encode(['errormesg' => "Prepare Failed"]);
+        exit;
+    }
+    
+
+    $rc_u = $st_u->bind_param("s", $GLOBALS['input']['username']);
+    if (false === $rc_u) {
+        print json_encode(['errormesg' => "Bind Failed"]);
+        exit;
+    }
+    
+	$rc_u = $st_u->execute();
+    if ( false===$rc_u ) {
+        print json_encode(['errormesg'=>"Execute Failed"]);
+        exit;
+    }
+
+    //e
+    $st_e = $mysqli->prepare($sql_e);
+    if (false === $st_e) {
+        print json_encode(['errormesg' => "Prepare Failed"]);
+        exit;
+    }
+
+    $rc_e = $st_e->bind_param("s", $GLOBALS['input']['email']);
+    if (false === $rc_e) {
+        print json_encode(['errormesg' => "Bind Failed"]);
+        exit;
+    }
+
+    $rc_e = $st_e->execute();
+    if ( false===$rc_e ) {
+        print json_encode(['errormesg'=>"Execute Failed"]);
+        exit;
+    }
+    $res_u = $st_u->get_result();
+    $res_e = $st_e->get_result();
+    if (mysqli_num_rows($res_e) >= 1 and mysqli_num_rows($res_u) < 1 ) {
+        print json_encode(['errormesg' => "Email already exist"]);
+        exit;
+    }else if(mysqli_num_rows($res_u) >= 1 and mysqli_num_rows($res_e) < 1 ){
+        print json_encode(['errormesg' => "Username already exist"]);
+        exit;
+    }else if(mysqli_num_rows($res_e) >= 1 and mysqli_num_rows($res_u) >=1 ){
+        print json_encode(['errormesg' => "Username and Email already exist"]);
+        exit;
+    }
 
     global $mysqli;
     $sql = "INSERT  id, username FROM users WHERE username = ? OR email = ? AND password = ?";
+
 }
 
