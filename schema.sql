@@ -69,7 +69,7 @@ CREATE TABLE `users` (
 
 DROP TABLE IF EXISTS `players`;
 CREATE TABLE `players` (
-    'player' int auto_increment,
+    `player` int auto_increment,
     `id` int(10) not null,
     `username` varchar(20) default null UNIQUE,
     `token` varchar(100) default null UNIQUE,
