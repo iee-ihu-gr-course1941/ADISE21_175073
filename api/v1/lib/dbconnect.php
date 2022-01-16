@@ -4,7 +4,7 @@ if(!defined('Access')) {
 }
 
 $host='localhost';
-$db = 'it185193';
+$db = 'adise';
 require_once "../../db_upass.php";
 
 $user=$DB_USER;
