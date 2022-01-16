@@ -84,7 +84,7 @@ function login()
     $passwordV =  password_verify($GLOBALS['input']['pass'],$row['password']);
 
     if($passwordV == false){
-        // print json_encode(['errormesg' => "Combination of username and password not found"]);
+        print json_encode(['errormesg' => "Combination of username and password not found"]);
         exit;
     }
 
