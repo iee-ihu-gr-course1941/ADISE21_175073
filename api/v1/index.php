@@ -197,7 +197,24 @@ function register()
     echo $hassedpwd;
 
     global $mysqli;
-    $sql = "INSERT  id, username FROM users WHERE username = ? OR email = ? AND password = ?";
+    $sql = "INSERT INTO users (username,email,password) values (?, ?, ?)";
 
+    $st = $mysqli->prepare($sql);
+    if (false === $st) {
+        print json_encode(['errormesg' => "Prepare Failed"]);
+        exit;
+    }
+
+    $rc = $st->bind_param("sss", $GLOBALS['input']['username'], $GLOBALS['input']['email'],$hassedpwd);
+    if (false === $rc) {
+        print json_encode(['errormesg' => "Bind Failed"]);
+        exit;
+    }
+
+	$rc = $st->execute();
+    if ( false===$rc ) {
+        print json_encode(['errormesg'=>"Execute Failed"]);
+        exit;
+    }
 }
 
