@@ -52,14 +52,14 @@ switch ($request[0]) {
 function login()
 {
     global $mysqli;
-    $sql = "SELECT id, username FROM users WHERE username = ? OR email = ? AND password = ?";
+    $sql = "SELECT id, username FROM users WHERE username = ? OR email = ?";
     $st = $mysqli->prepare($sql);
     if (false === $st) {
         print json_encode(['errormesg' => "Prepare Failed"]);
         exit;
     }
 
-    $rc = $st->bind_param("sss", $GLOBALS['input']['username'], $GLOBALS['input']['username'], $GLOBALS['input']['pass']);
+    $rc = $st->bind_param("ss", $GLOBALS['input']['username'], $GLOBALS['input']['username']);
     if (false === $rc) {
         print json_encode(['errormesg' => "Bind Failed"]);
         exit;
@@ -79,6 +79,15 @@ function login()
         print json_encode(['errormesg' => "Combination of username and password not found"]);
         exit;
     }
+    $row = mysqli_fetch_assoc($res);
+
+    $passwordV =  password_verify($GLOBALS['input']['pass'],$row['password']);
+
+    if($passwordV == false){
+        // print json_encode(['errormesg' => "Combination of username and password not found"]);
+        exit;
+    }
+
     $token = openssl_random_pseudo_bytes(16);
     $token = bin2hex($token);
 
@@ -183,6 +192,9 @@ function register()
         print json_encode(['errormesg' => "Username and Email already exist"]);
         exit;
     }
+
+    $hassedpwd = password_hash($password, PASSWORD_DEFAULT);
+    echo $hassedpwd;
 
     global $mysqli;
     $sql = "INSERT  id, username FROM users WHERE username = ? OR email = ? AND password = ?";
