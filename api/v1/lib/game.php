@@ -26,8 +26,8 @@ function joingame(){
         print json_encode(['errormesg'=>"Execute Failed"]);
         exit;
     }
-    $res = $st->get_result();
-    if (mysqli_num_rows($res) == 2) {
+    $res2 = $st->get_result();
+    if (mysqli_num_rows($res2) == 2) {
         print json_encode(['errormesg'=>"Max players"]);
         exit;
     }
@@ -52,6 +52,12 @@ function joingame(){
         print json_encode(['errormesg'=>"Execute Failed"]);
         exit;
     }
+
+    if (mysqli_num_rows($res2) == 1) {
+        echo "start Game";
+        exit;
+    }
+
     echo "TEST";
 }
 
