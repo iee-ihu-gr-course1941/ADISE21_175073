@@ -1,11 +1,12 @@
 <?php
-if(!defined('Access')) {
-	   die('Direct access not permitted');
+if (!defined('Access')) {
+    die('Direct access not permitted');
 }
 
-function joingame(){
+function joingame()
+{
 
-	global $mysqli;
+    global $mysqli;
 
 
     $sqlcheck = "Select * from players";
@@ -21,14 +22,19 @@ function joingame(){
     //     exit;
     // }
 
-	$rc = $st->execute();
-    if ( false===$rc ) {
-        print json_encode(['errormesg'=>"Execute Failed"]);
+    $rc = $st->execute();
+    if (false === $rc) {
+        print json_encode(['errormesg' => "Execute Failed"]);
         exit;
     }
     $res2 = $st->get_result();
     if (mysqli_num_rows($res2) == 2) {
-        print json_encode(['errormesg'=>"Max players"]);
+        if (mysqli_num_rows($res2) < 1) {
+            $new_role = "pick";
+        } else {
+            $new_role = "place";
+        }
+        print json_encode(['errormesg' => "Max players"]);
         exit;
     }
 
@@ -47,9 +53,9 @@ function joingame(){
         exit;
     }
 
-	$rc = $st->execute();
-    if ( false===$rc ) {
-        print json_encode(['errormesg'=>"Execute Failed"]);
+    $rc = $st->execute();
+    if (false === $rc) {
+        print json_encode(['errormesg' => "Execute Failed"]);
         exit;
     }
 
@@ -58,7 +64,9 @@ function joingame(){
         exit;
     }
 
+    $sql = 'update players set role=?';
+    $st = $mysqli->prepare($sql);
+    $st->bind_param('s',  $new_role);
+    $st->execute();
     echo "TEST";
 }
-
-?>
