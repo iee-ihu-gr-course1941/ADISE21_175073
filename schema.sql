@@ -49,8 +49,8 @@ VALUES
 DROP TABLE IF EXISTS `game_status`;
 CREATE TABLE `game_status` (
    `status` enum('start game','end game','not active','initalized','abord game')not null default 'not active',
-	`turn` int null default null,
-    `piece` int(2) null default null,
+	`turn` int default '1',
+    `piece` int(2) default null,
     `role` enum('pick','place','not active')not null default 'not active',
     `change` timestamp null default null
 );

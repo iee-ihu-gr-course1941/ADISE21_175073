@@ -8,7 +8,6 @@ function joingame()
 
     global $mysqli;
 
-
     $sqlcheck = "Select * from players";
     $st = $mysqli->prepare($sqlcheck);
     if (false === $st) {
@@ -29,11 +28,6 @@ function joingame()
     }
     $res2 = $st->get_result();
     if (mysqli_num_rows($res2) == 2) {
-        if (mysqli_num_rows($res2) < 1) {
-            $new_role = "pick";
-        } else {
-            $new_role = "place";
-        }
         print json_encode(['errormesg' => "Max players"]);
         exit;
     }
@@ -64,9 +58,40 @@ function joingame()
         exit;
     }
 
-    $sql = 'update players set role=?';
-    $st = $mysqli->prepare($sql);
-    $st->bind_param('s',  $new_role);
-    $st->execute();
     echo "TEST";
+}
+
+
+function updateStatus(){
+    global $mysqli;
+    $status = read_status();
+     
+
+
+
+
+}
+
+function showStatus(){
+    
+    global $mysqli;
+    $sql = "SELECT * FROM game_status";
+    $st = $mysqli->prepare($sql);
+	$st->execute();
+	$res = $st->get_result();
+	header('Content-type: application/json');
+	print json_encode($res->fetch_all(MYSQLI_ASSOC), JSON_PRETTY_PRINT);
+
+
+}
+
+function read_status()
+{
+	global $mysqli;
+	$sql = 'select * from game_status';
+	$st = $mysqli->prepare($sql);
+	$st->execute();
+	$res = $st->get_result();
+	$status = $res->fetch_assoc();
+	return ($status);
 }
