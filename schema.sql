@@ -21,7 +21,7 @@ CREATE TABLE `pieces`(
     `shape` enum('cycle','square')not null,
     `size` enum('long','short')not null,
     `hole` enum('YES','NO'),
-    `available` enum('TRUE','FALSE') default 'TRUE',
+    `available` enum('TRUE','FALSE') DEFAULT 'TRUE',
     primary key (`pieceID`)
 );
 
@@ -48,11 +48,10 @@ VALUES
 
 DROP TABLE IF EXISTS `game_status`;
 CREATE TABLE `game_status` (
-   `status` enum('start game','end game','not active','initalized','abord game')not null default 'not active',
-	`turn` int default '1',
-    `piece` int(2) default null,
-    `role` enum('pick','place','not active')not null default 'not active',
-    `change` timestamp null default null
+   `status` enum('start_game','end_game','not active','initalized','abord_game')not null DEFAULT 'not active',
+	`turn` TINYINT DEFAULT '1',
+    `piece` int(2) DEFAULT  null,
+    `change` timestamp null DEFAULT null
 );
 
 
@@ -60,10 +59,10 @@ CREATE TABLE `game_status` (
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
 	`id` int(10) not null auto_increment,
-     `username` varchar(20) default null UNIQUE,
-     `email` varchar(50) default null UNIQUE,
+     `username` varchar(20) DEFAULT null UNIQUE,
+     `email` varchar(50) DEFAULT null UNIQUE,
      `password` varchar(100),
-     `token` varchar(100) default null UNIQUE,
+     `token` varchar(100) DEFAULT null UNIQUE,
      primary key(`id`)
 );
 
@@ -71,8 +70,8 @@ DROP TABLE IF EXISTS `players`;
 CREATE TABLE `players` (
     `player` int auto_increment,
     `id` int(10) not null,
-    `username` varchar(20) default null UNIQUE,
-    `token` varchar(100) default null UNIQUE,
+    `username` varchar(20) DEFAULT null UNIQUE,
+    `token` varchar(100) DEFAULT null UNIQUE,
     primary key(`player`)
 );
 
@@ -125,3 +124,26 @@ DELIMITER ;$$
 --             return 4; --error
 --     END IF;
 -- END ;;
+
+DELIMITER ;;
+CREATE PROCEDURE `reset_pieces`()
+BEGIN
+UPDATE pieces SET available = "TRUE"
+WHERE available = "FALSE" ;
+END ;;
+DELIMITER ;
+
+DELIMITER ;;
+CREATE PROCEDURE `reset_game_status`()
+BEGIN
+update `game_status` set `status`='not active' ,`turn`=null ,`piece`=null ,`change`=null;
+END ;;
+DELIMITER ;
+
+
+DELIMITER ;;
+CREATE PROCEDURE `reset_players`()
+BEGIN
+DELETE FROM `players`;
+END ;;
+DELIMITER ;
