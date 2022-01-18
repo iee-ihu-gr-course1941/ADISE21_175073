@@ -15,12 +15,6 @@ function joingame()
         exit;
     }
 
-    // $rc = $st->bind_param("s", $_COOKIE['tokenC']);
-    // if (false === $rc) {
-    //     print json_encode(['errormesg' => "Bind Failed"]);
-    //     exit;
-    // }
-
     $rc = $st->execute();
     if (false === $rc) {
         print json_encode(['errormesg' => "Execute Failed"]);
@@ -113,7 +107,7 @@ function showStatus()
 {
 
     global $mysqli;
-    check_abort();
+    // check_abort();
     $sql = "SELECT * FROM game_status";
     $st = $mysqli->prepare($sql);
     $st->execute();
@@ -141,5 +135,5 @@ function check_abort()
     result=if(turn='0','1'),turn=null where turn is not null and
      change<(now()-INTERVAL 5 MINUTE) and status='start_game'";
     $st = $mysqli->prepare($sql);
-    $r = $st->execute();
+    $st->execute();
 }
