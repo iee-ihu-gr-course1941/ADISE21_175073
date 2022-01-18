@@ -52,11 +52,13 @@ VALUES
 
 DROP TABLE IF EXISTS `game_status`;
 CREATE TABLE `game_status` (
-   `status` enum('start_game','end_game','not active','initalized','abord_game')not null DEFAULT 'start_game',
+    `id` int(10) not null auto_increment,
+    `status` enum('start_game','end_game','not active','initalized','abord_game')not null DEFAULT 'start_game',
 	`turn` TINYINT DEFAULT '1',
     `state`  enum('pick', 'place')not null DEFAULT 'pick',
     `piece` int(2) DEFAULT  null,
-    `change` timestamp null DEFAULT null
+    `change` timestamp null DEFAULT null,
+    primary key(`id`)
 );
 
 INSERT INTO `game_status` VALUES();

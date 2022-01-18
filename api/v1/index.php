@@ -59,20 +59,23 @@ switch ($request[0]) {
             print json_encode(['errormesg' => "Method $method not allowed here."]);
         }
     break;
-    // case 'move':
-    //     if ($method == 'PUT') {
-    //         if (!isset($GLOBALS['input']['x'],$GLOBALS['input']['y']){
-    //             header("HTTP/1.1 400 Bad Request");
-    //             echo "kati";
-    //             exit();
-    //         }
-    //         move();
+    case 'place':
+        if ($method == 'POST') {
+            if (!isset($GLOBALS['input']['x'],$GLOBALS['input']['y'])  || !is_numeric($GLOBALS['input']['x']) || !is_numeric($GLOBALS['input']['y'])){
+                header("HTTP/1.1 400 Bad Request");
+                exit();
+            }
+            if($GLOBALS['input']['x'] < 1 || $GLOBALS['input']['x'] > 4 || $GLOBALS['input']['y'] < 1 || $GLOBALS['input']['y'] > 4){
+                header("HTTP/1.1 400 Bad Request");
+                exit();
+            }
+            place();
 
-    //     } else {
-    //         header("HTTP/1.1 400 Bad Request");
-    //         print json_encode(['errormesg' => "Method $method not allowed here."]);
-    //     }
-    // break;
+        } else {
+            header("HTTP/1.1 400 Bad Request");
+            print json_encode(['errormesg' => "Method $method not allowed here."]);
+        }
+    break;
     case 'joinGame':
         if ($method == 'POST') {
             joingame();

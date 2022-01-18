@@ -142,11 +142,13 @@ function showPieces()
     print json_encode($res->fetch_all(MYSQLI_ASSOC), JSON_PRETTY_PRINT);
 }
 
-function move()
+function place()
 {
-
     global $mysqli;
-    // check_abort();
+    $sql = 'select * from game_status';
+    $st = $mysqli->prepare($sql);
+    $st->execute();
+
 }
 
 
