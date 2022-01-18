@@ -77,6 +77,23 @@ switch ($request[0]) {
             print json_encode(['errormesg' => "Method $method not allowed here."]);
         }
     break;
+    case 'pick':
+        if ($method == 'POST') {
+            if (!isset($GLOBALS['input']['pieceID'])  || !is_numeric($GLOBALS['input']['pieceID'])){
+                header("HTTP/1.1 400 Bad Request");
+                exit();
+            }
+            if($GLOBALS['input']['x'] < 1 || $GLOBALS['input']['x'] > 16){
+                header("HTTP/1.1 400 Bad Request");
+                exit();
+            }
+            check_playerToken("pick");
+
+        } else {
+            header("HTTP/1.1 400 Bad Request");
+            print json_encode(['errormesg' => "Method $method not allowed here."]);
+        }
+    break;
     case 'joinGame':
         if ($method == 'POST') {
             joingame();

@@ -100,7 +100,7 @@ CREATE TABLE `players` (
 select * from users;
 select * from players;
 
-DELIMITER ;;
+DELIMITER ;;--PLACE
 CREATE or replace PROCEDURE `placepiece`(x int,y int, piece int)
 BEGIN
     update Board b set `pieceID` = piece where b.x = x and b.y = y;
@@ -110,6 +110,8 @@ BEGIN
 
 END ;;
 DELIMITER ;
+
+
 
 -- DELIMITER ;;
 -- CREATE PROCEDURE `reset_game_status`()
@@ -125,3 +127,18 @@ DELIMITER ;
 -- DELETE FROM `players`;
 -- END ;;
 -- DELIMITER ;
+
+
+DELIMITER ;;--PICK
+CREATE or replace PROCEDURE `pickpiece`(x int,y int, piece int)
+BEGIN
+    update Board b set `pieceID` = piece where b.x = x and b.y = y;
+    update pieces set `available` = FALSE where `pieceID` = piece;
+    
+    INSERT INTO `game_status` (turn,state) select turn,'pick' from game_status ORDER BY id DESC LIMIT 1;
+
+END ;;
+DELIMITER ;
+
+
+

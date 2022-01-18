@@ -54,6 +54,8 @@ function check_playerToken($move){
 
     if($move == "place"){
         place($x['pl']);
+    }else{
+        pick($x['pl']);
     }
     //
 }
@@ -83,6 +85,38 @@ function place($x)
     }
 
     $sql =  'call placepiece(?,?,?)';
+    $st = $mysqli->prepare($sql);
+    $st->bind_param('iii', $GLOBALS['input']['x'],$GLOBALS['input']['y'],$z['piece']);
+    $st->execute();
+    
+
+}
+
+function pick($x)
+{
+    global $mysqli;
+    $sql2 = 'SELECT state,turn FROM game_status ORDER BY id DESC LIMIT 1';
+    $st2 = $mysqli->prepare($sql2);
+    $st2->execute();
+    $res2 = $st2->get_result();
+    $z = $res2->fetch_assoc();
+
+    if(!($x == $z['turn'] && $z['state']=='pick' )){
+        print json_encode(['errormesg' => "Not the turn for that move"]);
+        exit;
+    }
+
+    $sql = "SELECT 1 FROM pieces WHERE pieceID=? AND available='FALSE' ";
+    $st = $mysqli->prepare($sql);
+    $st->bind_param('i', $GLOBALS['input']['pieceID']);
+    $st->execute();
+    $res = $st->get_result();
+    if (mysqli_num_rows($res) == 1) {
+        header("HTTP/1.1 400 Bad Request");
+        exit;
+    }
+
+    $sql =  'call pickpiece(?,?,?)';
     $st = $mysqli->prepare($sql);
     $st->bind_param('iii', $GLOBALS['input']['x'],$GLOBALS['input']['y'],$z['piece']);
     $st->execute();
