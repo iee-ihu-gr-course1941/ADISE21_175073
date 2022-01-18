@@ -47,26 +47,14 @@ function chech_valid($token){
     $x['pl'];
     echo $x['pl'];
 
-    $sql1 = 'SELECT turn ass "tr" FROM game_status';
-    $st1 = $mysqli->prepare($sql1);
-    $st1->bind_param('s', $token );
-    $st1->execute();
-    $res1 = $st1->get_result();
-    $y = $res1->fetch_assoc();
-    $y['tr'];
-    echo $y['tr'];
-
-    $sql2 =  'SELECT state FROM game_status ORDER BY id DESC LIMIT 1';
+    $sql2 =  'SELECT state,turn FROM game_status ORDER BY id DESC LIMIT 1';
     $st2 = $mysqli->prepare($sql2);
     $st2->execute();
     $res2 = $st2->get_result();
     $z = $res2->fetch_assoc();
 
-    if($x['pl'] == $y['tr']){
-        
-    }
+    if(!($x['pl'] == $z['turn'] && $z['state']=='pick' )){
+        header("HTTP/1.1 400 Bad Request");
+    }  
+    pick();
 }
-
-
-
-function 
