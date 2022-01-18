@@ -83,7 +83,7 @@ switch ($request[0]) {
                 header("HTTP/1.1 400 Bad Request");
                 exit();
             }
-            if($GLOBALS['input']['x'] < 1 || $GLOBALS['input']['x'] > 16){
+            if($GLOBALS['input']['pieceID'] < 1 || $GLOBALS['input']['pieceID'] > 16){
                 header("HTTP/1.1 400 Bad Request");
                 exit();
             }

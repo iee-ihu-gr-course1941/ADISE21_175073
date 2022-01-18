@@ -51,10 +51,10 @@ function check_playerToken($move){
         header("HTTP/1.1 400 Bad Request");
         exit;
     }
-
     if($move == "place"){
         place($x['pl']);
-    }else{
+    }
+    else{
         pick($x['pl']);
     }
     //
@@ -80,7 +80,7 @@ function place($x)
     $st->execute();
     $res = $st->get_result();
     if (mysqli_num_rows($res) == 1) {
-        header("HTTP/1.1 400 Bad Request");
+        print json_encode(['errormesg' => "Cant put it there"]);
         exit;
     }
 
@@ -91,7 +91,6 @@ function place($x)
     
 
 }
-
 function pick($x)
 {
     global $mysqli;
@@ -112,14 +111,13 @@ function pick($x)
     $st->execute();
     $res = $st->get_result();
     if (mysqli_num_rows($res) == 1) {
-        header("HTTP/1.1 400 Bad Request");
+        print json_encode(['errormesg' => "Not Available"]);
         exit;
     }
-
-    $sql =  'call pickpiece(?,?,?)';
+    $sql =  'call pickpiece(?)';
     $st = $mysqli->prepare($sql);
-    $st->bind_param('iii', $GLOBALS['input']['x'],$GLOBALS['input']['y'],$z['piece']);
+    $st->bind_param('i', $GLOBALS['input']['pieceID']);
     $st->execute();
-    
+
 
 }

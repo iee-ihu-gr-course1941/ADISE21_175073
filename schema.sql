@@ -1,26 +1,27 @@
 DELIMITER ;;
 
-CREATE PROCEDURE reset_board()
+CREATE or replace  PROCEDURE reset_board()
 BEGIN
-DELETE FROM `players`;
-DELETE FROM `game_status`;
-UPDATE pieces SET available = "TRUE"
-WHERE available = "FALSE" ;
-INSERT INTO `game_status` VALUES ('not active',null ,null ,null);
+-- DELETE FROM `players`;
+-- DELETE FROM `game_status`;
+-- UPDATE pieces SET available = "TRUE"
+-- WHERE available = "FALSE" ;
+-- INSERT INTO `game_status` VALUES ('not active',null ,null ,null);
 
     CREATE TABLE `Board`(
         `x` TINYINT(1) NOT NULL,
         `y` TINYINT(1) NOT NULL,
-        `pieceID` int(2) DEFAULT NULL,
+        `pieceID` int(2),
         primary key (`x`,`y`)
 
     );
 
-    INSERT INTO `Board` VALUES (1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4),(3,1),(3,2),(3,3),(3,4),(4,1),(4,2),(4,3),(4,4S);
+    INSERT INTO `Board` VALUES (1,1,NULL),(1,2,NULL),(1,3,NULL),(1,4,NULL),(2,1,NULL),(2,2,NULL),(2,3,NULL),(2,4,NULL),(3,1,NULL),(3,2,NULL),(3,3,NULL),(3,4,NULL),(4,1,NULL),(4,2,NULL),(4,3,NULL),(4,4,NULL);
 END ;;
 
 call reset_board();
 
+drop table if exists `pieces` CASCADE;
 CREATE OR REPLACE TABLE `pieces`(
     `pieceID` INT(2) AUTO_INCREMENT,
     `piececolor` enum('black','white')not null,
@@ -30,12 +31,6 @@ CREATE OR REPLACE TABLE `pieces`(
     `available` enum('TRUE','FALSE') DEFAULT 'TRUE',
     primary key (`pieceID`)
 );
-
-SELECT state,turn FROM game_status ORDER BY id DESC LIMIT 1;
-
-SELECT 1 FROM Board where `x` = 1 and `y` = 2 and `pieceID` is null
-SELECT * FROM Board;
-update Board set `pieceID` = 1 where `x` = 1 and `y` = 2;
 
 INSERT INTO `pieces` (piececolor,shape,size,hole)
 VALUES 
@@ -56,6 +51,9 @@ VALUES
 ('white','square','long','NO'),
 ('white','square','short','YES'),
 ('white','square','short','NO');
+
+select * from pieces;
+select * from Board;
 
 
 DROP TABLE IF EXISTS `game_status`;
@@ -100,45 +98,25 @@ CREATE TABLE `players` (
 select * from users;
 select * from players;
 
-DELIMITER ;;--PLACE
+DELIMITER ;;
 CREATE or replace PROCEDURE `placepiece`(x int,y int, piece int)
 BEGIN
     update Board b set `pieceID` = piece where b.x = x and b.y = y;
-    update pieces set `available` = FALSE where `pieceID` = piece;
-    
     INSERT INTO `game_status` (turn,state) select turn,'pick' from game_status ORDER BY id DESC LIMIT 1;
 
 END ;;
 DELIMITER ;
-
-
-
--- DELIMITER ;;
--- CREATE PROCEDURE `reset_game_status`()
--- BEGIN
--- update `game_status` set `status`='not active' ,`turn`=null ,`piece`=null ,`change`=null;
--- END ;;
--- DELIMITER ;
-
-
--- DELIMITER ;;
--- CREATE PROCEDURE `reset_players`()
--- BEGIN
--- DELETE FROM `players`;
--- END ;;
--- DELIMITER ;
-
 
 DELIMITER ;;--PICK
-CREATE or replace PROCEDURE `pickpiece`(x int,y int, piece int)
+CREATE or replace PROCEDURE pickpiece(piece int)
 BEGIN
-    update Board b set `pieceID` = piece where b.x = x and b.y = y;
-    update pieces set `available` = FALSE where `pieceID` = piece;
-    
-    INSERT INTO `game_status` (turn,state) select turn,'pick' from game_status ORDER BY id DESC LIMIT 1;
+    update pieces set `available` = 'FALSE' where `pieceID` = piece;
+
+    INSERT INTO game_status (turn,state,piece) select IF(g.turn=1,2,1),'place',piece from game_status g ORDER BY id DESC LIMIT 1;
 
 END ;;
 DELIMITER ;
 
+call pickpiece(2);
 
-
+select * from game_status;
