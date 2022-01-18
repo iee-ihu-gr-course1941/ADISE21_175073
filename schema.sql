@@ -8,7 +8,7 @@ BEGIN
 -- WHERE available = "FALSE" ;
 -- INSERT INTO `game_status` VALUES ('not active',null ,null ,null);
 
-    CREATE TABLE `Board`(
+    CREATE or replace TABLE `Board`(
         `x` TINYINT(1) NOT NULL,
         `y` TINYINT(1) NOT NULL,
         `pieceID` int(2),
@@ -68,10 +68,6 @@ CREATE TABLE `game_status` (
 );
 
 INSERT INTO `game_status` VALUES();
-INSERT INTO `game_status` (turn,state) VALUES(1,'place');
-
-INSERT INTO `game_status` (turn,state,piece) VALUES(1,'place',1);
-select * from game_status;
 
 
 
@@ -95,9 +91,6 @@ CREATE TABLE `players` (
 );
 
 
-select * from users;
-select * from players;
-
 DELIMITER ;;
 CREATE or replace PROCEDURE `placepiece`(x int,y int, piece int)
 BEGIN
@@ -120,3 +113,8 @@ DELIMITER ;
 call pickpiece(2);
 
 select * from game_status;
+select * from Board;
+
+select * from pieces;
+
+select * from players;
