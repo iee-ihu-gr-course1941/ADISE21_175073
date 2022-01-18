@@ -61,6 +61,8 @@ CREATE TABLE `game_status` (
     `change` timestamp null DEFAULT null
 );
 
+INSERT INTO `game_status` VALUES ('start_game',2,null,now());
+
 
 
 DROP TABLE IF EXISTS `users`;
@@ -87,29 +89,29 @@ select * from users;
 select * from players;
 Insert into users (username,email,password) VALUES ('thankarezos','thankarezos@gmail.com','pass');
 
-DELIMITER $$;
-CREATE OR REPLACE FUNCTION setAccount(firstname text, lastname text, emails text, usernames text, pass text)
- RETURNS int
-    BEGIN
-    IF NOT EXISTS (SELECT 1 FROM account a WHERE a.email = emails) AND NOT EXISTS (SELECT 1 FROM account a WHERE a.username = usernames)
-        THEN
-            INSERT INTO account (firstname, lastname , email , username , pass )
-            VALUES (firstname, lastname , emails , usernames , pass);
-            return 0; -- 0 0
-    ELSIF EXISTS (SELECT 1 FROM account a WHERE a.email = emails) AND NOT EXISTS (SELECT 1 FROM account a WHERE a.username = usernames)
-        THEN
-            return 1; -- 1 0
-    ELSIF NOT EXISTS (SELECT 1 FROM account a WHERE a.email = emails) AND EXISTS (SELECT 1 FROM account a WHERE a.username = usernames)
-        THEN
-            return 2; -- 0 1
-    ELSIF EXISTS (SELECT 1 FROM account a WHERE a.email = emails) AND EXISTS (SELECT 1 FROM account a WHERE a.username = usernames)
-        THEN
-            return 3; -- 1 1
-        ELSE
-            return 4; --error
-    END IF;
-END;
-DELIMITER ;$$
+-- DELIMITER $$;
+-- CREATE OR REPLACE FUNCTION setAccount(firstname text, lastname text, emails text, usernames text, pass text)
+--  RETURNS int
+--     BEGIN
+--     IF NOT EXISTS (SELECT 1 FROM account a WHERE a.email = emails) AND NOT EXISTS (SELECT 1 FROM account a WHERE a.username = usernames)
+--         THEN
+--             INSERT INTO account (firstname, lastname , email , username , pass )
+--             VALUES (firstname, lastname , emails , usernames , pass);
+--             return 0; -- 0 0
+--     ELSIF EXISTS (SELECT 1 FROM account a WHERE a.email = emails) AND NOT EXISTS (SELECT 1 FROM account a WHERE a.username = usernames)
+--         THEN
+--             return 1; -- 1 0
+--     ELSIF NOT EXISTS (SELECT 1 FROM account a WHERE a.email = emails) AND EXISTS (SELECT 1 FROM account a WHERE a.username = usernames)
+--         THEN
+--             return 2; -- 0 1
+--     ELSIF EXISTS (SELECT 1 FROM account a WHERE a.email = emails) AND EXISTS (SELECT 1 FROM account a WHERE a.username = usernames)
+--         THEN
+--             return 3; -- 1 1
+--         ELSE
+--             return 4; --error
+--     END IF;
+-- END;
+-- DELIMITER ;$$
 
 -- CREATE OR REPLACE PROCEDURE setUsers(usernames text, emails text,  pass text)
 --     BEGIN

@@ -33,15 +33,24 @@ switch ($request[0]) {
             print json_encode(['errormesg' => "Method $method not allowed here."]);
         }
         break;
-    case 'joinGame':
-        if ($method == 'POST') {
-            joingame();
+    case 'checkstatus':
+        if ($method == 'GET') {
+            showStatus();
 
         } else {
             header("HTTP/1.1 400 Bad Request");
             print json_encode(['errormesg' => "Method $method not allowed here."]);
         }
         break;
+        case 'joinGame':
+            if ($method == 'POST') {
+                joingame();
+    
+            } else {
+                header("HTTP/1.1 400 Bad Request");
+                print json_encode(['errormesg' => "Method $method not allowed here."]);
+            }
+            break;
     default:
         header("HTTP/1.1 404 Not Found");
         print json_encode(['errormesg' => "Player request not found."]);
