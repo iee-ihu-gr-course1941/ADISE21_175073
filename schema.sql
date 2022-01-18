@@ -8,21 +8,18 @@ UPDATE pieces SET available = "TRUE"
 WHERE available = "FALSE" ;
 INSERT INTO `game_status` VALUES ('not active',null ,null ,null);
 
-    DROP TABLE IF EXISTS Board;
-
     CREATE TABLE `Board`(
         `x` TINYINT(1) NOT NULL,
         `y` TINYINT(1) NOT NULL,
         `pieceID` int(2),
-        primary key (`x`,`y`),
-        FOREIGN KEY (pieceID) REFERENCES pieces(pieceID)
+        primary key (`x`,`y`)
+
     );
 
     INSERT INTO `Board` VALUES (1,1,NULL),(1,2,NULL),(1,3,NULL),(1,4,NULL),(2,1,NULL),(2,2,NULL),(2,3,NULL),(2,4,NULL),(3,1,NULL),(3,2,NULL),(3,3,NULL),(3,4,NULL),(4,1,NULL),(4,2,NULL),(4,3,NULL),(4,4,NULL);
 END ;;
 
-DROP TABLE IF EXISTS pieces;
-CREATE TABLE `pieces`(
+CREATE OR REPLACE TABLE `pieces`(
     `pieceID` INT(2) AUTO_INCREMENT,
     `piececolor` enum('black','white')not null,
     `shape` enum('cycle','square')not null,
@@ -55,11 +52,13 @@ VALUES
 
 DROP TABLE IF EXISTS `game_status`;
 CREATE TABLE `game_status` (
-   `status` enum('start_game','end_game','not active','initalized','abord_game')not null DEFAULT 'start_game',
+    `id` int(10) not null auto_increment,
+    `status` enum('start_game','end_game','not active','initalized','abord_game')not null DEFAULT 'start_game',
 	`turn` TINYINT DEFAULT '1',
     `state`  enum('pick', 'place')not null DEFAULT 'pick',
     `piece` int(2) DEFAULT  null,
-    `change` timestamp null DEFAULT null
+    `change` timestamp null DEFAULT null,
+    primary key(`id`)
 );
 
 INSERT INTO `game_status` VALUES();

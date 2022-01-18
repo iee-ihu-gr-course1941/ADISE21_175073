@@ -129,6 +129,29 @@ function showBoard()
     print json_encode($res->fetch_all(MYSQLI_ASSOC), JSON_PRETTY_PRINT);
 }
 
+function showPieces()
+{
+
+    global $mysqli;
+    // check_abort();
+    $sql = "SELECT * FROM pieces where available=TRUE";
+    $st = $mysqli->prepare($sql);
+    $st->execute();
+    $res = $st->get_result();
+    header('Content-type: application/json');
+    print json_encode($res->fetch_all(MYSQLI_ASSOC), JSON_PRETTY_PRINT);
+}
+
+function place()
+{
+    global $mysqli;
+    $sql = 'select * from game_status';
+    $st = $mysqli->prepare($sql);
+    $st->execute();
+
+}
+
+
 function read_status()
 {
     global $mysqli;
