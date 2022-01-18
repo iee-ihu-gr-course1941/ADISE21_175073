@@ -41,19 +41,28 @@ switch ($request[0]) {
             header("HTTP/1.1 400 Bad Request");
             print json_encode(['errormesg' => "Method $method not allowed here."]);
         }
+    break;
+    case 'showboard':
+        if ($method == 'GET') {
+            showBoard();
+
+        } else {
+            header("HTTP/1.1 400 Bad Request");
+            print json_encode(['errormesg' => "Method $method not allowed here."]);
+        }
+    break;
+    case 'joinGame':
+        if ($method == 'POST') {
+            joingame();
+
+        } else {
+            header("HTTP/1.1 400 Bad Request");
+            print json_encode(['errormesg' => "Method $method not allowed here."]);
+        }
         break;
-        case 'joinGame':
-            if ($method == 'POST') {
-                joingame();
-    
-            } else {
-                header("HTTP/1.1 400 Bad Request");
-                print json_encode(['errormesg' => "Method $method not allowed here."]);
-            }
-            break;
     default:
         header("HTTP/1.1 404 Not Found");
-        print json_encode(['errormesg' => "Player request not found."]);
+        print json_encode(['errormesg' => "Not found."]);
         break;
 }
 
