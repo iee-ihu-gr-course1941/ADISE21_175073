@@ -3,6 +3,7 @@ define('Access', TRUE);
 require_once "lib/dbconnect.php";
 require_once "lib/login.php";
 require_once "lib/game.php";
+require_once "lib/board.php";
 $method = $_SERVER['REQUEST_METHOD'];
 $request = explode('/', trim($_SERVER['PATH_INFO'], '/'));
 $GLOBALS['input'] = json_decode(file_get_contents('php://input'), true);
@@ -69,7 +70,7 @@ switch ($request[0]) {
                 header("HTTP/1.1 400 Bad Request");
                 exit();
             }
-            place();
+            check_playerToken("place");
 
         } else {
             header("HTTP/1.1 400 Bad Request");

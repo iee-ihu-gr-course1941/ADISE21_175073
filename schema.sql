@@ -19,6 +19,8 @@ INSERT INTO `game_status` VALUES ('not active',null ,null ,null);
     INSERT INTO `Board` VALUES (1,1,NULL),(1,2,NULL),(1,3,NULL),(1,4,NULL),(2,1,NULL),(2,2,NULL),(2,3,NULL),(2,4,NULL),(3,1,NULL),(3,2,NULL),(3,3,NULL),(3,4,NULL),(4,1,NULL),(4,2,NULL),(4,3,NULL),(4,4,NULL);
 END ;;
 
+call reset_board();
+
 CREATE OR REPLACE TABLE `pieces`(
     `pieceID` INT(2) AUTO_INCREMENT,
     `piececolor` enum('black','white')not null,
@@ -28,6 +30,12 @@ CREATE OR REPLACE TABLE `pieces`(
     `available` enum('TRUE','FALSE') DEFAULT 'TRUE',
     primary key (`pieceID`)
 );
+
+SELECT state,turn FROM game_status ORDER BY id DESC LIMIT 1;
+
+SELECT 1 FROM Board where `x` = 1 and `y` = 2 and `pieceID` is null
+SELECT * FROM Board;
+update Board set `pieceID` = 1 where `x` = 1 and `y` = 2;
 
 INSERT INTO `pieces` (piececolor,shape,size,hole)
 VALUES 
@@ -57,11 +65,15 @@ CREATE TABLE `game_status` (
 	`turn` TINYINT DEFAULT '1',
     `state`  enum('pick', 'place')not null DEFAULT 'pick',
     `piece` int(2) DEFAULT  null,
-    `change` timestamp null DEFAULT null,
+    `change` timestamp DEFAULT now(),
     primary key(`id`)
 );
 
 INSERT INTO `game_status` VALUES();
+INSERT INTO `game_status` (turn,state) VALUES(1,'place');
+
+INSERT INTO `game_status` (turn,state,piece) VALUES(1,'place',1);
+select * from game_status;
 
 
 
@@ -88,13 +100,16 @@ CREATE TABLE `players` (
 select * from users;
 select * from players;
 
--- DELIMITER ;;
--- CREATE PROCEDURE `reset_pieces`()
--- BEGIN
--- UPDATE pieces SET available = "TRUE"
--- WHERE available = "FALSE" ;
--- END ;;
--- DELIMITER ;
+DELIMITER ;;
+CREATE or replace PROCEDURE `placepiece`(x int,y int, piece int)
+BEGIN
+    update Board b set `pieceID` = piece where b.x = x and b.y = y;
+    update pieces set `available` = FALSE where `pieceID` = piece;
+    
+    INSERT INTO `game_status` (turn,state) select turn,'pick' from game_status ORDER BY id DESC LIMIT 1;
+
+END ;;
+DELIMITER ;
 
 -- DELIMITER ;;
 -- CREATE PROCEDURE `reset_game_status`()
