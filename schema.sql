@@ -120,19 +120,19 @@ INSERT INTO `game_status` VALUES();
     INSERT INTO `Board` (x,y) VALUES (1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4),(3,1),(3,2),(3,3),(3,4),(4,1),(4,2),(4,3),(4,4);
 END ;;
 
-call reset_game();
+-- call reset_game();
 
 
 
-select * from game_status;
-select * from Board;
+-- select * from game_status;
+-- select * from Board;
 
-select * from pieces;
+-- select * from pieces;
 
-select * from players;
-select * from users;
+-- select * from players;
+-- select * from users;
 
 
-call `placepiece`(1,1, 1);
-call `placepiece`(1,2, 2);
-call `placepiece`(1,3, 3);
+-- call `placepiece`(1,1, 1);
+-- call `placepiece`(1,2, 2);
+-- call `placepiece`(1,3, 3);
