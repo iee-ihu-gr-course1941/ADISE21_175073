@@ -65,12 +65,6 @@ function login()
     $rc = $st->execute();
     if (false === $rc) {
         print json_encode(['errormesg' => "Execute Failed2"]);
-		// if(! empty( $mysqli->errno ) ){
-        //     // echo $mysqli->errno;
-        //     // echo $mysqli->error;
-        //     print json_encode(array("errormesg"=>"Execute Failed","errorNo"=>$mysqli->error));
-        //     exit;
-        // }
         exit;
     }
     print json_encode(['success'=>"TRUE"]);

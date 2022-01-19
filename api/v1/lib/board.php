@@ -25,7 +25,7 @@ function read_piecesBoard()
     return ($res->fetch_all(MYSQLI_ASSOC));
 }
 
-function reset_board()
+function reset_game()
 {
     global $mysqli;
     $sql = 'call reset_game()';

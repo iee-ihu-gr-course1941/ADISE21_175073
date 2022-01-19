@@ -103,6 +103,15 @@ switch ($request[0]) {
             print json_encode(['errormesg' => "Method $method not allowed here."]);
         }
         break;
+    case 'resetGame':
+        if ($method == 'POST') {
+            reset_game();
+
+        } else {
+            header("HTTP/1.1 400 Bad Request");
+            print json_encode(['errormesg' => "Method $method not allowed here."]);
+        }
+        break;
     default:
         header("HTTP/1.1 404 Not Found");
         print json_encode(['errormesg' => "Not found."]);
