@@ -244,7 +244,23 @@ function checkWin()
         exit;
     }
 
+    $sql= "select count(*) from board where pieceID is not null";
+    $st = $mysqli->prepare($sql);
+    $st->execute();
+    $res = $st->get_result();
+    if (mysqli_num_rows($res) == 16) {
+        print json_encode(['won'=>'Draw']);
+        exit;
+    }
 
+
+}
+
+function setDraw(){
+    global $mysqli;
+    $sql= "INSERT INTO game_status (status,turn,state,won) select 'end_game',g.turn,g.state,'draw' from game_status g ORDER BY id DESC LIMIT 1";
+    $st = $mysqli->prepare($sql);
+    $st->execute();
 }
 
 function setwon(){
@@ -265,8 +281,9 @@ function setwon(){
     print json_encode(['won'=>$username['username']]);
 
 
-    $sql= "INSERT INTO game_status (status,turn,state) select 'end_game',g.turn,g.state from game_status g ORDER BY id DESC LIMIT 1";
+    $sql= "INSERT INTO game_status (status,turn,state,won) select 'end_game',g.turn,g.state,? from game_status g ORDER BY id DESC LIMIT 1";
     $st = $mysqli->prepare($sql);
+    $rc = $st->bind_param("s", $username['username']);
     $st->execute();
 }
 

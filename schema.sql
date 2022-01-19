@@ -1,15 +1,5 @@
-DELIMITER ;;
 
-CREATE or replace PROCEDURE reset_game()
-BEGIN
-DELETE FROM `players`;
-ALTER TABLE `players` AUTO_INCREMENT = 1;
-DELETE FROM `game_status`;
-UPDATE pieces SET available = "TRUE"
-WHERE available = "FALSE" ;
-INSERT INTO `game_status` VALUES();
-
-    CREATE or replace TABLE `Board`(
+CREATE or replace TABLE `Board`(
         `x` TINYINT(1) NOT NULL,
         `y` TINYINT(1) NOT NULL,
         `pieceID` int(2) DEFAULT NULL,
@@ -17,10 +7,8 @@ INSERT INTO `game_status` VALUES();
 
     );
 
-    INSERT INTO `Board` (x,y) VALUES (1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4),(3,1),(3,2),(3,3),(3,4),(4,1),(4,2),(4,3),(4,4);
-END ;;
+INSERT INTO `Board` (x,y) VALUES (1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4),(3,1),(3,2),(3,3),(3,4),(4,1),(4,2),(4,3),(4,4);
 
-call reset_game();
 
 drop table if exists `pieces` CASCADE;
 CREATE OR REPLACE TABLE `pieces`(
@@ -53,9 +41,6 @@ VALUES
 ('white','square','short','YES'),
 ('white','square','short','NO');
 
-select * from pieces;
-select * from Board;
-
 
 
 DROP TABLE IF EXISTS `game_status`;
@@ -66,6 +51,7 @@ CREATE TABLE `game_status` (
     `state`  enum('pick', 'place')not null DEFAULT 'pick',
     `piece` int(2) DEFAULT  null,
     `change` timestamp DEFAULT now(),
+    `won` text DEFAULT null,
     primary key(`id`)
 );
 
@@ -81,15 +67,6 @@ CREATE TABLE `users` (
      `password` varchar(100),
      `token` varchar(100) DEFAULT null UNIQUE,
      primary key(`id`)
-);
-
-DROP TABLE IF EXISTS `players`;
-CREATE TABLE `players` (
-    `player` int auto_increment,
-    `id` int(10) not null,
-    `username` varchar(20) DEFAULT null UNIQUE,
-    `token` varchar(100) DEFAULT null UNIQUE,
-    primary key(`player`)
 );
 
 
@@ -111,6 +88,32 @@ BEGIN
 
 END ;;
 DELIMITER ;
+
+DELIMITER ;;
+
+CREATE or replace PROCEDURE reset_game()
+BEGIN
+DELETE FROM `players`;
+ALTER TABLE `players` AUTO_INCREMENT = 1;
+DELETE FROM `game_status`;
+UPDATE pieces SET available = "TRUE"
+WHERE available = "FALSE" ;
+INSERT INTO `game_status` VALUES();
+
+    CREATE or replace TABLE `Board`(
+        `x` TINYINT(1) NOT NULL,
+        `y` TINYINT(1) NOT NULL,
+        `pieceID` int(2) DEFAULT NULL,
+        primary key (`x`,`y`)
+
+    );
+
+    INSERT INTO `Board` (x,y) VALUES (1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4),(3,1),(3,2),(3,3),(3,4),(4,1),(4,2),(4,3),(4,4);
+END ;;
+
+call reset_game();
+
+
 
 select * from game_status;
 select * from Board;
