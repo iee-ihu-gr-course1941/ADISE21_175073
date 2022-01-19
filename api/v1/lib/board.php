@@ -51,10 +51,10 @@ function check_playerToken($move){
         header("HTTP/1.1 400 Bad Request");
         exit;
     }
-
     if($move == "place"){
         place($x['pl']);
-    }else{
+    }
+    else{
         pick($x['pl']);
     }
     //
@@ -62,6 +62,7 @@ function check_playerToken($move){
 
 function place($x)
 {
+    checkStart();
     global $mysqli;
     $sql2 =  'SELECT state,turn,piece FROM game_status ORDER BY id DESC LIMIT 1';
     $st2 = $mysqli->prepare($sql2);
@@ -80,7 +81,7 @@ function place($x)
     $st->execute();
     $res = $st->get_result();
     if (mysqli_num_rows($res) == 1) {
-        header("HTTP/1.1 400 Bad Request");
+        print json_encode(['errormesg' => "Cant put it there"]);
         exit;
     }
 
@@ -88,12 +89,11 @@ function place($x)
     $st = $mysqli->prepare($sql);
     $st->bind_param('iii', $GLOBALS['input']['x'],$GLOBALS['input']['y'],$z['piece']);
     $st->execute();
-    
+    print json_encode(['success'=>"TRUE"]);
 
 }
-
 function pick($x)
-{
+{   checkStart();
     global $mysqli;
     $sql2 = 'SELECT state,turn FROM game_status ORDER BY id DESC LIMIT 1';
     $st2 = $mysqli->prepare($sql2);
@@ -112,14 +112,24 @@ function pick($x)
     $st->execute();
     $res = $st->get_result();
     if (mysqli_num_rows($res) == 1) {
-        header("HTTP/1.1 400 Bad Request");
+        print json_encode(['errormesg' => "Not Available"]);
         exit;
     }
-
-    $sql =  'call pickpiece(?,?,?)';
+    $sql =  'call pickpiece(?)';
     $st = $mysqli->prepare($sql);
-    $st->bind_param('iii', $GLOBALS['input']['x'],$GLOBALS['input']['y'],$z['piece']);
+    $st->bind_param('i', $GLOBALS['input']['pieceID']);
     $st->execute();
-    
+    print json_encode(['success'=>"TRUE"]);
 
+}
+function checkStart(){
+    global $mysqli;
+    $sql = "SELECT 1 FROM game_status where status = 'start_game' ORDER BY id DESC LIMIT 1 ";
+    $st = $mysqli->prepare($sql);
+    $st->execute();
+    $res = $st->get_result();
+    if (mysqli_num_rows($res) != 1) {
+        print json_encode(['errormesg' => "Not started"]);
+        exit;
+    }
 }
