@@ -89,7 +89,7 @@ function place($x)
     $st = $mysqli->prepare($sql);
     $st->bind_param('iii', $GLOBALS['input']['x'],$GLOBALS['input']['y'],$z['piece']);
     $st->execute();
-    
+    print json_encode(['success'=>"TRUE"]);
 
 }
 function pick($x)
@@ -119,7 +119,7 @@ function pick($x)
     $st = $mysqli->prepare($sql);
     $st->bind_param('i', $GLOBALS['input']['pieceID']);
     $st->execute();
-
+    print json_encode(['success'=>"TRUE"]);
 
 }
 function checkStart(){
