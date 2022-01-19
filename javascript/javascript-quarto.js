@@ -5,63 +5,36 @@
 
 
 $(function() {
-    empty_board();
+    $('#sub').click(login_to_game);
 });
 
 function login_to_game() {
-    if (isset($_POST['login-submit'])) {
-        if ((empty($('#username').val())) || (empty(('#pwd').val()))) {
-            alert('You have to set a values');
-            return;
-        } else {
-            $sql = "SELECT * FROM users where uidUsers=? OR emailUsers=?;";
-            $stmt = mysqli_stmt_init($conn);
-            if (!mysqli_stmt_prepare($stmt, $sql)) {
-                header("Location: ../index.php?error=sqlerror");
-                exit();
-            } else {
-                mysqli_stmt_bind_param($stmt, "ss", $mailuid, $mailuid);
-                mysqli_stmt_execute($stmt);
-                $results = mysqli_stmt_get_result($stmt);
-                if ($row = mysqli_fetch_assoc($results)) {
-                    $pwdCheck = password_verify($password, $row['pwdUsers']);
-                    if ($pwdCheck == false) {
-                        header("Location: ../index.php?error=wrongpwd");
-                        exit();
-                    } else if ($pwdCheck == true) {
-                        session_start();
-                        $_SESSION['userId'] = $row['idUsers'];
-                        $_SESSION['userUid'] = $row['uidUsers'];
-
-                        header("Location: ../index.php?login=success");
-                        exit();
-                    } else {
-                        header("Location: ../index.php?error=wrongpwd");
-                        exit();
-                    }
-                } else {
-                    header("Location: ../index.php?error=noUser");
-                    exit();
-                }
-            }
-        }
-    } else {
-        header("Location: ../index.php");
-        exit();
-    }
-    draw_empty_board();
     $.ajax({
-        url: "api/v1/index.php/lib/login/",
-        method: 'PUT',
+        url: "api/v1/login/",
+        method: 'POST',
         dataType: "json",
-        headers: { "X-Token": $_COOKIE['tokenC'] },
         contentType: 'application/json',
-        data: JSON.stringify({ username: $('#username').val() }),
-        success: login_result,
+        data: JSON.stringify({ username: $('#username').val(), pass: $('#pass').val() }),
+        // success: success,
         error: login_error
     });
 
 }
+
+
+function regist_to_game() {
+    $.ajax({
+        url: "api/v1/register/",
+        method: 'GET',
+        dataType: "json",
+        contentType: 'application/json',
+        data: JSON.stringify({ username: $('#username').val(), pass: $('#pass').val() }),
+        // success: success,
+        error: login_error
+    });
+
+}
+
 
 function empty_board() {
     var table = '<table id = "quarto-table">';
@@ -90,20 +63,15 @@ function available_piece() {
     $('#available-piece').html(table);
 }
 
-function login_result(data) {
-    if (isset($_POST['login-submit'])) {
-        // me = data[0]; ?
-        $("#game_login_input").hide();
-        piece_list();
-        update_info();
-        game_status_update();
-    }
+function success(data) {
+    var x = data[0].success;
+    alert(x);
 }
 
-// function login_error(data) {
-// 	var x = data.responseJSON;
-// 	alert(x.errormesg);
-// }
+function login_error(data) {
+    var x = data.responseJSON;
+    alert(x.errormesg);
+}
 
 function update_info() {
     $('#player_info').html("<h4>Player info</h4> " +
@@ -116,4 +84,8 @@ function update_info() {
         "<strong> Player turn: </strong>" + game_status.turn +
         "<strong> Current Piece: </strong>" + game_status.current_piece +
         "<strong> Result: </strong>" + game_status.result);
+}
+
+function save_player_info(data) {
+    me = data[0];
 }

@@ -67,7 +67,7 @@ function login()
         print json_encode(['errormesg' => "Execute Failed2"]);
         exit;
     }
-    print json_encode(['success'=>"TRUE"]);
+    print json_encode(['data'=>"TRUE"]);
     
 }
 
