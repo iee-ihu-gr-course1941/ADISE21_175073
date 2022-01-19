@@ -121,8 +121,11 @@ select * from Board;
 select * from pieces;
 
 select * from players;
+select * from users;
 
 select x,y, p.* from board b left join pieces p on b.pieceID = p.pieceID
+
+INSERT INTO game_status (status,turn,state,won) select 'end_game',g.turn,g.state,'thankarezos' from game_status g ORDER BY id DESC LIMIT 1
 
 call `placepiece`(1,1, 1);
 call `placepiece`(1,2, 2);
