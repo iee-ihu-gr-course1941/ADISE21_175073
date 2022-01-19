@@ -59,7 +59,7 @@ select * from Board;
 DROP TABLE IF EXISTS `game_status`;
 CREATE TABLE `game_status` (
     `id` int(10) not null auto_increment,
-    `status` enum('start_game','end_game','not active','initalized','abord_game')not null DEFAULT 'start_game',
+    `status` enum('start_game','end_game','not active','initalized','abord_game')not null DEFAULT 'not active',
 	`turn` TINYINT DEFAULT '1',
     `state`  enum('pick', 'place')not null DEFAULT 'pick',
     `piece` int(2) DEFAULT  null,
@@ -95,7 +95,7 @@ DELIMITER ;;
 CREATE or replace PROCEDURE `placepiece`(x int,y int, piece int)
 BEGIN
     update Board b set `pieceID` = piece where b.x = x and b.y = y;
-    INSERT INTO `game_status` (turn,state) select turn,'pick' from game_status ORDER BY id DESC LIMIT 1;
+    INSERT INTO `game_status` (turn,state,status) select turn,'pick',status from game_status ORDER BY id DESC LIMIT 1;
 
 END ;;
 DELIMITER ;
@@ -105,7 +105,7 @@ CREATE or replace PROCEDURE pickpiece(piece int)
 BEGIN
     update pieces set `available` = 'FALSE' where `pieceID` = piece;
 
-    INSERT INTO game_status (turn,state,piece) select IF(g.turn=1,2,1),'place',piece from game_status g ORDER BY id DESC LIMIT 1;
+    INSERT INTO game_status (turn,state,piece,status) select IF(g.turn=1,2,1),'place',piece,status from game_status g ORDER BY id DESC LIMIT 1;
 
 END ;;
 DELIMITER ;

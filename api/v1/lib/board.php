@@ -62,6 +62,7 @@ function check_playerToken($move){
 
 function place($x)
 {
+    checkStart();
     global $mysqli;
     $sql2 =  'SELECT state,turn,piece FROM game_status ORDER BY id DESC LIMIT 1';
     $st2 = $mysqli->prepare($sql2);
@@ -92,7 +93,7 @@ function place($x)
 
 }
 function pick($x)
-{
+{   checkStart();
     global $mysqli;
     $sql2 = 'SELECT state,turn FROM game_status ORDER BY id DESC LIMIT 1';
     $st2 = $mysqli->prepare($sql2);
@@ -120,4 +121,15 @@ function pick($x)
     $st->execute();
 
 
+}
+function checkStart(){
+    global $mysqli;
+    $sql = "SELECT 1 FROM game_status where status = 'start_game' ORDER BY id DESC LIMIT 1 ";
+    $st = $mysqli->prepare($sql);
+    $st->execute();
+    $res = $st->get_result();
+    if (mysqli_num_rows($res) != 1) {
+        print json_encode(['errormesg' => "Not started"]);
+        exit;
+    }
 }
