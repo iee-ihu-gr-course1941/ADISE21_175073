@@ -2,7 +2,7 @@
 // var game_status = { status: null, p_turn: null, current_piece: null, result: null, win_direction: null, last_change: null };
 // var last_update = new Date().getTime();
 // var timer = null;
-
+var x = { username: null, pass: null };
 
 $(function() {
     $('#sub').click(login_to_game);
@@ -15,7 +15,7 @@ function login_to_game() {
         dataType: "json",
         contentType: 'application/json',
         data: JSON.stringify({ username: $('#username').val(), pass: $('#pass').val() }),
-        // success: success,
+        success: successv,
         error: login_error
     });
 
@@ -63,9 +63,9 @@ function available_piece() {
     $('#available-piece').html(table);
 }
 
-function success(data) {
-    var x = data[0].success;
-    alert(x);
+function successv(data) {
+    var x = data[0];
+    alert(x.username);
 }
 
 function login_error(data) {
