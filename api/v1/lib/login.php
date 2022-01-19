@@ -69,8 +69,7 @@ function login()
         print json_encode(['errormesg' => "Execute Failed2"]);
         exit;
     }
-    header('Content-type: application/json');
-    print json_encode(['data' => "TRUE"]);
+    print json_encode(['errormesg'=>"TRUE"]);
     
 }
 
