@@ -16,7 +16,7 @@ function login_to_game() {
         contentType: 'application/json',
         data: JSON.stringify({ username: $('#username').val(), pass: $('#pass').val() }),
         success: onsuccess
-        // error: login_error
+        // error: login_error 
     });
 
 }
@@ -65,14 +65,15 @@ function available_piece() {
 
 function onsuccess(data) {
 
-    var success = data.success;
+    var success = data.errormesg;
 
     alert(success);
 }
 
 function login_error(data) {
-    var x = data[0].errormesg;
-    alert(x);
+
+    var errorm = data.errormesg;
+    alert(errorm);
 }
 
 function update_info() {
