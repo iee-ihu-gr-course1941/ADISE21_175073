@@ -1,12 +1,13 @@
 DELIMITER ;;
 
-CREATE PROCEDURE reset_game()
+CREATE or replace PROCEDURE reset_game()
 BEGIN
 DELETE FROM `players`;
+ALTER TABLE `players` AUTO_INCREMENT = 1;
 DELETE FROM `game_status`;
 UPDATE pieces SET available = "TRUE"
 WHERE available = "FALSE" ;
-INSERT INTO `game_status` VALUES ('not active',null ,null ,null);
+INSERT INTO `game_status` VALUES();
 
     CREATE or replace TABLE `Board`(
         `x` TINYINT(1) NOT NULL,
@@ -16,7 +17,7 @@ INSERT INTO `game_status` VALUES ('not active',null ,null ,null);
 
     );
 
-    INSERT INTO `Board` VALUES (1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4),(3,1),(3,2),(3,3),(3,4),(4,1),(4,2),(4,3),(4,4);
+    INSERT INTO `Board` (x,y) VALUES (1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4),(3,1),(3,2),(3,3),(3,4),(4,1),(4,2),(4,3),(4,4);
 END ;;
 
 call reset_game();
@@ -67,7 +68,7 @@ CREATE TABLE `game_status` (
     primary key(`id`)
 );
 
-INSERT INTO `game_status` VALUES();
+
 
 
 
@@ -109,8 +110,6 @@ BEGIN
 
 END ;;
 DELIMITER ;
-
-call pickpiece(2);
 
 select * from game_status;
 select * from Board;
