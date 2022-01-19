@@ -1,6 +1,6 @@
 DELIMITER ;;
 
-CREATE PROCEDURE reset_board()
+CREATE PROCEDURE reset_game()
 BEGIN
 DELETE FROM `players`;
 DELETE FROM `game_status`;
@@ -19,7 +19,7 @@ INSERT INTO `game_status` VALUES ('not active',null ,null ,null);
     INSERT INTO `Board` VALUES (1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4),(3,1),(3,2),(3,3),(3,4),(4,1),(4,2),(4,3),(4,4S);
 END ;;
 
-call reset_board();
+call reset_game();
 
 CREATE OR REPLACE TABLE `pieces`(
     `pieceID` INT(2) AUTO_INCREMENT,
