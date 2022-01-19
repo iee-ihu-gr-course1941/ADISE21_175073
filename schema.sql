@@ -60,6 +60,7 @@ select * from pieces;
 select * from Board;
 
 
+
 DROP TABLE IF EXISTS `game_status`;
 CREATE TABLE `game_status` (
     `id` int(10) not null auto_increment,
@@ -120,3 +121,9 @@ select * from Board;
 select * from pieces;
 
 select * from players;
+
+select x,y, p.* from board b left join pieces p on b.pieceID = p.pieceID
+
+call `placepiece`(1,1, 1);
+call `placepiece`(1,2, 2);
+call `placepiece`(1,3, 3);
