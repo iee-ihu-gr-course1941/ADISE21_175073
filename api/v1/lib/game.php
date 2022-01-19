@@ -244,7 +244,7 @@ function checkWin()
         exit;
     }
 
-    $sql= "select count(*) from board where pieceID is not null";
+    $sql= "select count(*) from Board where pieceID is not null";
     $st = $mysqli->prepare($sql);
     $st->execute();
     $res = $st->get_result();
@@ -264,6 +264,7 @@ function setDraw(){
 }
 
 function setwon(){
+    echo "won";
     global $mysqli;
     $sql= "select turn from game_status ORDER BY id DESC LIMIT 1";
     $st = $mysqli->prepare($sql);

@@ -132,7 +132,8 @@ END ;;
 -- select * from players;
 -- select * from users;
 
-
--- call `placepiece`(1,1, 1);
--- call `placepiece`(1,2, 2);
--- call `placepiece`(1,3, 3);
+update Board set pieceID = null where x = 1 and y = 4
+select x,y, p.* from board b left join pieces p on b.pieceID = p.pieceID
+call `placepiece`(1,1, 1);
+call `placepiece`(1,2, 2);
+call `placepiece`(1,3, 3);

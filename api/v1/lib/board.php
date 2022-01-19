@@ -18,7 +18,7 @@ function read_board()
 function read_piecesBoard()
 {
     global $mysqli;
-    $sql = 'select x,y, p.* from board b left join pieces p on b.pieceID = p.pieceID';
+    $sql = 'select x,y, p.* from Board b left join pieces p on b.pieceID = p.pieceID';
     $st = $mysqli->prepare($sql);
     $st->execute();
     $res = $st->get_result();
