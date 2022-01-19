@@ -15,8 +15,8 @@ function login_to_game() {
         dataType: "json",
         contentType: 'application/json',
         data: JSON.stringify({ username: $('#username').val(), pass: $('#pass').val() }),
-        // success: success,
-        error: login_error
+        success: onsuccess
+        // error: login_error
     });
 
 }
@@ -63,14 +63,16 @@ function available_piece() {
     $('#available-piece').html(table);
 }
 
-function success(data) {
-    var x = data[0].success;
-    alert(x);
+function onsuccess(data) {
+
+    var success = data.success;
+
+    alert(success);
 }
 
 function login_error(data) {
-    var x = data.responseJSON;
-    alert(x.errormesg);
+    var x = data[0].errormesg;
+    alert(x);
 }
 
 function update_info() {
