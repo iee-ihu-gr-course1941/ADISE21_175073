@@ -56,7 +56,7 @@ switch ($request[0]) {
     break;
     case 'showpieces':
         if ($method == 'GET') {
-            showpieces();
+            showPieces();
 
         } else {
             header("HTTP/1.1 400 Bad Request");
