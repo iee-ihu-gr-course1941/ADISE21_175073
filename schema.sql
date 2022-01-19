@@ -69,6 +69,15 @@ CREATE TABLE `users` (
      primary key(`id`)
 );
 
+DROP TABLE IF EXISTS `players`;
+CREATE TABLE `players` (
+    `player` int auto_increment,
+    `id` int(10) not null,
+    `username` varchar(20) default null UNIQUE,
+    `token` varchar(100) default null UNIQUE,
+    primary key(`player`)
+);
+
 
 DELIMITER ;;
 CREATE or replace PROCEDURE `placepiece`(x int,y int, piece int)
