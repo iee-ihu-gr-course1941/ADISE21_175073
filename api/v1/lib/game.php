@@ -113,6 +113,12 @@ function read_status()
     return ($status);
 }
 
+function checkWin()
+{
+    global $mysqli;
+    print json_encode(read_board(), JSON_PRETTY_PRINT);
+}
+
 function check_abort()
 {
     global $mysqli;

@@ -3,11 +3,7 @@ if (!defined('Access')) {
     die('Direct access not permitted');
 }
 
-function show_board($input)
-{
-    header('Content-type: application/json');
-    print json_encode(read_board(), JSON_PRETTY_PRINT);
-}
+require_once "lib/game.php";
 
 function read_board()
 {
@@ -90,6 +86,7 @@ function place($x)
     $st->bind_param('iii', $GLOBALS['input']['x'],$GLOBALS['input']['y'],$z['piece']);
     $st->execute();
     print json_encode(['success'=>"TRUE"]);
+    checkWin();
 
 }
 function pick($x)
@@ -120,6 +117,7 @@ function pick($x)
     $st->bind_param('i', $GLOBALS['input']['pieceID']);
     $st->execute();
     print json_encode(['success'=>"TRUE"]);
+    
 
 }
 function checkStart(){
