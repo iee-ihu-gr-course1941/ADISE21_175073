@@ -15,11 +15,22 @@ function read_board()
     return ($res->fetch_all(MYSQLI_ASSOC));
 }
 
+function read_piecesBoard()
+{
+    global $mysqli;
+    $sql = 'select x,y, p.* from board b left join pieces p on b.pieceID = p.pieceID';
+    $st = $mysqli->prepare($sql);
+    $st->execute();
+    $res = $st->get_result();
+    return ($res->fetch_all(MYSQLI_ASSOC));
+}
+
 function reset_board()
 {
     global $mysqli;
     $sql = 'call reset_game()';
-    $mysqli->query($sql);
+    $st = $mysqli->prepare($sql);
+    $st->execute();
 }
 
 function piece_list()
