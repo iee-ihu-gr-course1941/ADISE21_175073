@@ -19,7 +19,8 @@ function reset_board()
 {
     global $mysqli;
     $sql = 'call reset_game()';
-    $mysqli->query($sql);
+    $st = $mysqli->prepare($sql);
+    $st->execute();
 }
 
 function piece_list()
