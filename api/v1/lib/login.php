@@ -58,12 +58,14 @@ function login()
 
     $rc = $st->bind_param('sss', $token, $GLOBALS['input']['username'], $GLOBALS['input']['username']);
     if (false === $rc) {
+        header('Content-type: application/json');
         print json_encode(['errormesg' => "Bind Failed"]);
         exit;
     }
 
     $rc = $st->execute();
     if (false === $rc) {
+        header('Content-type: application/json');
         print json_encode(['errormesg' => "Execute Failed2"]);
         exit;
     }

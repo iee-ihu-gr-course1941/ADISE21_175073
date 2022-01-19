@@ -2,7 +2,7 @@
 // var game_status = { status: null, p_turn: null, current_piece: null, result: null, win_direction: null, last_change: null };
 // var last_update = new Date().getTime();
 // var timer = null;
-
+var x = { username: null, pass: null };
 
 $(function() {
     $('#sub').click(login_to_game);
@@ -16,7 +16,7 @@ function login_to_game() {
         contentType: 'application/json',
         data: JSON.stringify({ username: $('#username').val(), pass: $('#pass').val() }),
         success: onsuccess
-        // error: login_error 
+            // error: login_error 
     });
 
 }
