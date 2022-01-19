@@ -1,25 +1,25 @@
 DELIMITER ;;
 
-CREATE or replace  PROCEDURE reset_board()
+CREATE PROCEDURE reset_game()
 BEGIN
--- DELETE FROM `players`;
--- DELETE FROM `game_status`;
--- UPDATE pieces SET available = "TRUE"
--- WHERE available = "FALSE" ;
--- INSERT INTO `game_status` VALUES ('not active',null ,null ,null);
+DELETE FROM `players`;
+DELETE FROM `game_status`;
+UPDATE pieces SET available = "TRUE"
+WHERE available = "FALSE" ;
+INSERT INTO `game_status` VALUES ('not active',null ,null ,null);
 
     CREATE or replace TABLE `Board`(
         `x` TINYINT(1) NOT NULL,
         `y` TINYINT(1) NOT NULL,
-        `pieceID` int(2),
+        `pieceID` int(2) DEFAULT NULL,
         primary key (`x`,`y`)
 
     );
 
-    INSERT INTO `Board` VALUES (1,1,NULL),(1,2,NULL),(1,3,NULL),(1,4,NULL),(2,1,NULL),(2,2,NULL),(2,3,NULL),(2,4,NULL),(3,1,NULL),(3,2,NULL),(3,3,NULL),(3,4,NULL),(4,1,NULL),(4,2,NULL),(4,3,NULL),(4,4,NULL);
+    INSERT INTO `Board` VALUES (1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4),(3,1),(3,2),(3,3),(3,4),(4,1),(4,2),(4,3),(4,4);
 END ;;
 
-call reset_board();
+call reset_game();
 
 drop table if exists `pieces` CASCADE;
 CREATE OR REPLACE TABLE `pieces`(
